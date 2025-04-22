@@ -3,6 +3,7 @@ import json
 from vosk import Model, KaldiRecognizer
 
 from nlp_processing import text_preprocessing
+from regex_processing import regex_preprocessing
 
 # Carga el modelo de voz en español
 model = Model("./vosk-model-small-es-0.42")
@@ -30,7 +31,9 @@ try:
             text = result.get("text", "")
             if text:
                 print("USUARIO: ", text)
-                print("Texto procesado:", text_preprocessing(text))
+                processing = " ".join(text_preprocessing(text))
+                regex_process = regex_preprocessing(processing, text)
+
                 
 except KeyboardInterrupt:
     print("Interrumpido por el usuario")
