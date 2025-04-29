@@ -1,22 +1,20 @@
 import re
 import reminders
 
+patterns = [r"\bcre\b.*\brecordatori\w*\b|\bestablec\b.*\brecordatori\w*\b",
+             r"\blist\b.*\brecordatori\w*\b|\bmo\bmuestr*\brecordatori\w*\b",]
+
+functions = [reminders.create_reminder, reminders.read_reminders]
+
+
 def regex_preprocessing(text_steammed,text):
     
-    # Remove special characters and numbers
-    text_steammed = re.sub(r'[^a-zA-Z\s]', '', text_steammed)
-
-    # Funcion de recordatorios
-    pattern_one = r"\bcre\b.*\brecordatori\w*\b|\bestablec\b.*\brecordatori\w*\b"
-    
-    if re.search(pattern_one, text_steammed):
-
-        reminders.create_reminder(text)
-
-    pattern_two = "\blis\b.*\brecordatori\w*\b|\bmostr\b.*\brecordatori\w*\b"
-
-    if re.search(pattern_two, text_steammed):
-        print("Listando recordatorios...")
-        reminders.read_reminders()
+    for pattern in patterns:
+        match = re.search(pattern, text_steammed)
+        if match:
+            index = patterns.index(pattern)
+            function = functions[index]
+            function(text)
+            
     
     return text_steammed
